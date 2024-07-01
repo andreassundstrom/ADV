@@ -31,7 +31,8 @@
             <Image Grid.Column="0" Name="DicomImageSurface"/>
             <DataGrid Grid.Column="1" ItemsSource="{Binding DicomTags}" AutoGenerateColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Tag" Binding="{Binding Key}" />
+                    <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
+                    <DataGridTextColumn Header="Tag" Binding="{Binding Tag}" />
                     <DataGridTextColumn Header="Value" Binding="{Binding Value}" />
                 </DataGrid.Columns>
             </DataGrid>

@@ -6,6 +6,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using ADV.Viewer.Models;
 using FellowOakDicom;
 using FellowOakDicom.Imaging;
 using FellowOakDicom.Imaging.Codec;
@@ -71,6 +72,10 @@ public partial class MainWindow : Window
 
     private void ReadDicom(string file)
     {
+        // Reset from previous file
+        MainWindowDataContext.Frame = 0;
+        MainWindowDataContext.MaxFrames = 0;
+
         try
         {
             DicomFile dicomFile = DicomFile.Open(file);
@@ -128,11 +133,13 @@ public partial class MainWindow : Window
 
     private void SetDicomTags(DicomDataset dataset)
     {
-        Dictionary<string, string> tags = [];
+        List<DicomTagVM> tags = [];
+        int i = 0;
         foreach (DicomItem? tag in dataset)
         {
             bool value = dataset.TryGetString(tag.Tag, out string stringValue);
-            tags.Add(tag.ToString(), value ? stringValue : "# No string representation");
+            tags.Add(new DicomTagVM(i, tag.ToString(), value ? stringValue : "# No string representation"));
+            i++;
         }
 
         MainWindowDataContext.DicomTags = tags;

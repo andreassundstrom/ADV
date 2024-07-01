@@ -4,6 +4,7 @@
 
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using ADV.Viewer.Models;
 
 namespace ADV.Viewer;
 
@@ -12,7 +13,7 @@ namespace ADV.Viewer;
 /// </summary>
 public class MainWindowDataContext : INotifyPropertyChanged
 {
-    private Dictionary<string, string> dicomTags = [];
+    private List<DicomTagVM> dicomTags = [];
 
     private string? fileName;
 
@@ -30,7 +31,7 @@ public class MainWindowDataContext : INotifyPropertyChanged
     /// <summary>
     /// Gets or sets tags for currently loaded DICOM file.
     /// </summary>
-    public Dictionary<string, string> DicomTags
+    public List<DicomTagVM> DicomTags
     {
         get
         {
