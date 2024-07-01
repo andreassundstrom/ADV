@@ -1,0 +1,13 @@
+﻿[*.cs]
+
+# SA1206: Declaration keywords should follow order
+dotnet_diagnostic.SA1206.severity = none
+
+# SA1101: Prefix local calls with this
+dotnet_diagnostic.SA1101.severity = none
+
+# SA1200: Using directive should appear within a namespace declaration 
+dotnet_diagnostic.SA1200.severity = none
+
+# SA1010	Opening square brackets should not be preceded by a space.
+dotnet_diagnostic.SA1010.severity = none

@@ -1,21 +1,30 @@
-﻿using FellowOakDicom;
-using FellowOakDicom.Imaging;
-using FellowOakDicom.Imaging.Codec;
-using Microsoft.Win32;
-using System.ComponentModel;
+﻿// <copyright file="MainWindow.xaml.cs" company="Andreas Sundström">
+// Copyright (c) Andreas Sundström. All rights reserved.
+// </copyright>
+
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using FellowOakDicom;
+using FellowOakDicom.Imaging;
+using FellowOakDicom.Imaging.Codec;
+using Microsoft.Win32;
 
 namespace ADV.Viewer;
 
 /// <summary>
-/// Interaction logic for MainWindow.xaml
+/// Interaction logic for MainWindow.xaml.
 /// </summary>
 public partial class MainWindow : Window
 {
+    private readonly DispatcherTimer playTime;
+
+    private DicomImage? dicomImage;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MainWindow"/> class.
+    /// </summary>
     public MainWindow()
     {
         new DicomSetupBuilder()
@@ -35,14 +44,15 @@ public partial class MainWindow : Window
         playTime.Interval = new TimeSpan(0, 0, 0, 0, 100);
     }
 
+    /// <summary>
+    /// Gets the data context for the window.
+    /// </summary>
+    public MainWindowDataContext MainWindowDataContext { get; }
+
     private void Timer_Tick(object? sender, EventArgs e)
     {
         SlideToNextFrame();
     }
-
-    public MainWindowDataContext MainWindowDataContext { get; }
-    private DicomImage? dicomImage;
-    private readonly DispatcherTimer playTime;
 
     private void File_Open_Click(object sender, RoutedEventArgs e)
     {
@@ -76,7 +86,6 @@ public partial class MainWindow : Window
             WriteableBitmap bitmap = dicomImage.RenderImage().AsWriteableBitmap();
             DicomImageSurface.Source = bitmap;
             MainWindowDataContext.MaxFrames = dicomImage.NumberOfFrames - 1;
-
         }
         catch (DicomFileException exception)
         {
@@ -119,12 +128,13 @@ public partial class MainWindow : Window
 
     private void SetDicomTags(DicomDataset dataset)
     {
-        Dictionary<string, string> tags = new System.Collections.Generic.Dictionary<string, string>();
+        Dictionary<string, string> tags = [];
         foreach (DicomItem? tag in dataset)
         {
             bool value = dataset.TryGetString(tag.Tag, out string stringValue);
             tags.Add(tag.ToString(), value ? stringValue : "# No string representation");
         }
+
         MainWindowDataContext.DicomTags = tags;
     }
 
@@ -149,83 +159,4 @@ public partial class MainWindow : Window
     {
         Application.Current.Shutdown();
     }
-}
-
-public class MainWindowDataContext : INotifyPropertyChanged
-{
-    private Dictionary<string, string> dicomTags = [];
-    public Dictionary<string, string> DicomTags
-    {
-        get { return dicomTags; }
-        set
-        {
-            dicomTags = value;
-            OnPropertyChanged();
-        }
-    }
-
-    private string? _fileName;
-    public string? FileName
-    {
-        get { return _fileName; }
-        set
-        {
-            _fileName = value;
-            OnPropertyChanged();
-        }
-    }
-
-    private int frame;
-    public int Frame
-    {
-        get { return frame; }
-        set
-        {
-            frame = value;
-            OnPropertyChanged();
-            OnPropertyChanged(nameof(FrameDisplay));
-        }
-    }
-
-    public string FrameDisplay
-    {
-        get { return $"Frame {frame}/{maxFrames}"; }
-    }
-
-    public bool playing = false;
-    public bool Playing
-    {
-        get { return playing; }
-        set
-        {
-            playing = value;
-            OnPropertyChanged();
-            OnPropertyChanged(nameof(PlayEnabled));
-            OnPropertyChanged(nameof(PauseEnabled));
-
-        }
-    }
-
-    public bool PlayEnabled { get => !Playing; }
-    public bool PauseEnabled { get => Playing; }
-
-    private int maxFrames;
-    public int MaxFrames
-    {
-        get { return maxFrames; }
-        set
-        {
-            maxFrames = value;
-            OnPropertyChanged();
-            OnPropertyChanged(nameof(FrameDisplay));
-        }
-    }
-
-
-    protected void OnPropertyChanged([CallerMemberName] string? name = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-    }
-
-    public event PropertyChangedEventHandler? PropertyChanged;
 }
