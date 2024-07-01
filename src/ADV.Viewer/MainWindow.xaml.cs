@@ -136,11 +136,13 @@ public partial class MainWindow : Window
     private void PlayButton_Click(object sender, RoutedEventArgs e)
     {
         playTime.Start();
+        MainWindowDataContext.Playing = true;
     }
 
     private void PauseButton_Click(object sender, RoutedEventArgs e)
     {
         playTime.Stop();
+        MainWindowDataContext.Playing = false;
     }
 
     private void File_Close_Click(object sender, RoutedEventArgs e)
@@ -152,7 +154,6 @@ public partial class MainWindow : Window
 public class MainWindowDataContext : INotifyPropertyChanged
 {
     private Dictionary<string, string> dicomTags = [];
-
     public Dictionary<string, string> DicomTags
     {
         get { return dicomTags; }
@@ -162,7 +163,6 @@ public class MainWindowDataContext : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-
 
     private string? _fileName;
     public string? FileName
@@ -176,7 +176,6 @@ public class MainWindowDataContext : INotifyPropertyChanged
     }
 
     private int frame;
-
     public int Frame
     {
         get { return frame; }
@@ -193,8 +192,24 @@ public class MainWindowDataContext : INotifyPropertyChanged
         get { return $"Frame {frame}/{maxFrames}"; }
     }
 
-    private int maxFrames;
+    public bool playing = false;
+    public bool Playing
+    {
+        get { return playing; }
+        set
+        {
+            playing = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(PlayEnabled));
+            OnPropertyChanged(nameof(PauseEnabled));
 
+        }
+    }
+
+    public bool PlayEnabled { get => !Playing; }
+    public bool PauseEnabled { get => Playing; }
+
+    private int maxFrames;
     public int MaxFrames
     {
         get { return maxFrames; }
@@ -205,7 +220,6 @@ public class MainWindowDataContext : INotifyPropertyChanged
             OnPropertyChanged(nameof(FrameDisplay));
         }
     }
-
 
 
     protected void OnPropertyChanged([CallerMemberName] string? name = null)

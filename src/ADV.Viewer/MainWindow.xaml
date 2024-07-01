@@ -14,8 +14,12 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Menu Grid.Row="0" DockPanel.Dock="Top">
-            <MenuItem Header="File">
-                <MenuItem Header="Open" Name="File_Open" Click="File_Open_Click" />
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open">
+                    <MenuItem Header="File" Name="File_Open" Click="File_Open_Click" />
+                    <MenuItem Header="Folder" Name="File_OpenFolder" />
+                </MenuItem>
+                <Separator/>
                 <MenuItem Header="Exit" Name="File_Close" Click="File_Close_Click" />
             </MenuItem>
         </Menu>
@@ -38,9 +42,9 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <Button Margin="5" Padding="5" Grid.Column="0" Name="PlayButton" Click="PlayButton_Click">▶️</Button>
-            <Button Margin="5" Padding="5" Grid.Column="1" Name="PauseButton" Click="PauseButton_Click">⏸️</Button>
-            <Slider Margin="10" Grid.Column="2" Name="FrameSlider" ValueChanged="FrameSlider_ValueChanged" Orientation="Horizontal" Value="{Binding Frame,Mode=TwoWay}" Minimum="0" Maximum="{Binding MaxFrames}"></Slider>
+            <Button IsEnabled="{Binding PlayEnabled}"  Margin="5 5 0 5" Padding="5" Grid.Column="0" Name="PlayButton" Click="PlayButton_Click">▶️</Button>
+            <Button IsEnabled="{Binding PauseEnabled}" Margin="5 5 0 5" Padding="5" Grid.Column="1" Name="PauseButton" Click="PauseButton_Click">⏸️</Button>
+            <Slider Margin="0 10 5 0" Grid.Column="2" Name="FrameSlider" ValueChanged="FrameSlider_ValueChanged" Orientation="Horizontal" Value="{Binding Frame,Mode=TwoWay}" Minimum="0" Maximum="{Binding MaxFrames}"></Slider>
         </Grid>
             
         <StatusBar Grid.Row="3">
