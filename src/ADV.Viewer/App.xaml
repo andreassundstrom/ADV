@@ -1,9 +1,8 @@
 ﻿<Application x:Class="adv.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:adv"
+             xmlns:local="clr-namespace:ADV.Viewer"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
     </Application.Resources>
 </Application>

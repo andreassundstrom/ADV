@@ -7,6 +7,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace ADV.Viewer;
 
@@ -29,10 +30,20 @@ public partial class MainWindow : Window
         InitializeComponent();
         MainWindowDataContext = new MainWindowDataContext();
         DataContext = MainWindowDataContext;
+        playTime = new DispatcherTimer();
+        playTime.Tick += Timer_Tick;
+        playTime.Interval = new TimeSpan(0, 0, 0, 0, 100);
+    }
+
+    private void Timer_Tick(object? sender, EventArgs e)
+    {
+        SlideToNextFrame();
     }
 
     public MainWindowDataContext MainWindowDataContext { get; }
     private DicomImage? dicomImage;
+    private readonly DispatcherTimer playTime;
+
     private void File_Open_Click(object sender, RoutedEventArgs e)
     {
         FileDialog fileDialog = new OpenFileDialog();
@@ -53,11 +64,19 @@ public partial class MainWindow : Window
         try
         {
             DicomFile dicomFile = DicomFile.Open(file);
+
+            if (dicomFile.Dataset.TryGetValue(DicomTag.FrameTime, 0, out string frameTimeDecimalString))
+            {
+                int frameTimeInt = int.Parse(frameTimeDecimalString);
+                playTime.Interval = new TimeSpan(0, 0, 0, 0, frameTimeInt);
+            }
+
             SetDicomTags(dicomFile.Dataset);
             dicomImage = new DicomImage(file);
             WriteableBitmap bitmap = dicomImage.RenderImage().AsWriteableBitmap();
             DicomImageSurface.Source = bitmap;
             MainWindowDataContext.MaxFrames = dicomImage.NumberOfFrames - 1;
+
         }
         catch (DicomFileException exception)
         {
@@ -71,6 +90,18 @@ public partial class MainWindow : Window
         {
             MessageBox.Show(exception.Message, "Unhandled exception");
         }
+    }
+
+    private void SlideToNextFrame()
+    {
+        if (MainWindowDataContext.Frame == MainWindowDataContext.MaxFrames)
+        {
+            MainWindowDataContext.Frame = 0;
+            return;
+        }
+
+        MainWindowDataContext.Frame += 1;
+        SlideToFrame(MainWindowDataContext.Frame);
     }
 
     private void SlideToFrame(int frame)
@@ -100,6 +131,21 @@ public partial class MainWindow : Window
     private void FrameSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
     {
         SlideToFrame((int)e.NewValue);
+    }
+
+    private void PlayButton_Click(object sender, RoutedEventArgs e)
+    {
+        playTime.Start();
+    }
+
+    private void PauseButton_Click(object sender, RoutedEventArgs e)
+    {
+        playTime.Stop();
+    }
+
+    private void File_Close_Click(object sender, RoutedEventArgs e)
+    {
+        Application.Current.Shutdown();
     }
 }
 
