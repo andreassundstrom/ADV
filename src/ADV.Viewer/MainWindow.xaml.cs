@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -165,5 +166,34 @@ public partial class MainWindow : Window
     private void File_Close_Click(object sender, RoutedEventArgs e)
     {
         Application.Current.Shutdown();
+    }
+
+    private void Dicom_AddTag_Click(object sender, RoutedEventArgs e)
+    {
+        AddTagWindow addTagWindow = new AddTagWindow();
+        bool? result = addTagWindow.ShowDialog();
+        if (result == true)
+        {
+            string tagString = addTagWindow.AddTagWindowDataContext.DicomTag;
+            string valueString = addTagWindow.AddTagWindowDataContext.TagValue;
+            MatchCollection matches = Regex.Matches(tagString, @"\d{4}");
+            if (matches.Count != 2)
+            {
+                MessageBox.Show("Failed to parse the dicom tag, ensure its format is (XXXX,XXXX)", "Error parsing result");
+                return;
+            }
+
+            string group = matches.First().Value;
+            string element = matches.Last().Value;
+            ushort groupShort = Convert.ToUInt16(group, 16);
+            ushort elementShort = Convert.ToUInt16(element, 16);
+
+            DicomTag tag = new DicomTag(groupShort, elementShort);
+
+            // Create new by value
+            List<DicomTagVM> newTagList = new List<DicomTagVM>(MainWindowDataContext.DicomTags);
+            newTagList.Add(new DicomTagVM(MainWindowDataContext.DicomTags.Count, tag.ToString(), valueString));
+            MainWindowDataContext.DicomTags = newTagList;
+        }
     }
 }

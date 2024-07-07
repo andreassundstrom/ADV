@@ -22,6 +22,9 @@
                 <Separator/>
                 <MenuItem Header="Exit" Name="File_Close" Click="File_Close_Click" />
             </MenuItem>
+            <MenuItem Header="_Dicom">
+                <MenuItem Header="_Add tag" Name="Dicom_AddTag" Click="Dicom_AddTag_Click"></MenuItem>
+            </MenuItem>
         </Menu>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -29,7 +32,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Image Grid.Column="0" Name="DicomImageSurface"/>
-            <DataGrid Grid.Column="1" ItemsSource="{Binding DicomTags}" AutoGenerateColumns="False">
+            <DataGrid Grid.Column="1" ItemsSource="{Binding DicomTags}" AutoGenerateColumns="False" CanUserAddRows="True">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
                     <DataGridTextColumn Header="Tag" Binding="{Binding Tag}" />
