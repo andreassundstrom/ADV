@@ -17,14 +17,14 @@ namespace ADV.Viewer
         public AddTagWindow()
         {
             InitializeComponent();
-            AddTagWindowDataContext = new AddTagWindowDataContext();
+            AddTagWindowDataContext = new AddTagViewModel();
             DataContext = AddTagWindowDataContext;
         }
 
         /// <summary>
         /// Gets or sets the datacontext for the window.
         /// </summary>
-        public AddTagWindowDataContext AddTagWindowDataContext { get; set; }
+        public AddTagViewModel AddTagWindowDataContext { get; set; }
 
         private void Cancel_Button_Click(object sender, RoutedEventArgs e)
         {

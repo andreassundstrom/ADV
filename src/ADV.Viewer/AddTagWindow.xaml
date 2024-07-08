@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ADV.Viewer"
         mc:Ignorable="d"
         Title="Add new tag"
 
@@ -18,12 +17,16 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Label Grid.Row="0">Tag, eg. (0008,0030)</Label>
-        <TextBox Grid.Row="1" Text="{Binding DicomTag}"></TextBox>
-        <Label Grid.Row="2">Value</Label>
-        <TextBox Grid.Row="3" Text="{Binding TagValue}"></TextBox>
-        <Grid Grid.Row="4" Margin="0 4 0 0">
+        <TextBox x:Name="DicomTag_TextBox" Grid.Row="1" Text="{Binding DicomTag}"></TextBox>
+        <Label Grid.Row="2" Content="{Binding ElementName=DicomTag_TextBox,Path=(Validation.Errors)[0].ErrorContent}" Foreground="Red"></Label>
+        <Label Grid.Row="3">Value</Label>
+        <TextBox x:Name="TagValue_TextBox" Grid.Row="4" Text="{Binding TagValue}"></TextBox>
+        <Label Grid.Row="5" Content="{Binding ElementName=TagValue_TextBox,Path=(Validation.Errors)[0].ErrorContent}" Foreground="Red"></Label>
+        <Grid Grid.Row="6" Margin="0 4 0 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
