@@ -39,7 +39,7 @@ public partial class MainWindow : Window
             .Build();
 
         InitializeComponent();
-        MainWindowDataContext = new MainWindowDataContext();
+        MainWindowDataContext = new MainWindowViewModel();
         DataContext = MainWindowDataContext;
         playTime = new DispatcherTimer();
         playTime.Tick += Timer_Tick;
@@ -49,7 +49,7 @@ public partial class MainWindow : Window
     /// <summary>
     /// Gets the data context for the window.
     /// </summary>
-    public MainWindowDataContext MainWindowDataContext { get; }
+    public MainWindowViewModel MainWindowDataContext { get; }
 
     private void Timer_Tick(object? sender, EventArgs e)
     {

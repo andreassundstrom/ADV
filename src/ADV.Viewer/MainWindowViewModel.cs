@@ -1,4 +1,4 @@
-﻿// <copyright file="MainWindowDataContext.cs" company="Andreas Sundström">
+﻿// <copyright file="MainWindowViewModel.cs" company="Andreas Sundström">
 // Copyright (c) Andreas Sundström. All rights reserved.
 // </copyright>
 
@@ -11,7 +11,7 @@ namespace ADV.Viewer;
 /// <summary>
 /// Main windows data context.
 /// </summary>
-public class MainWindowDataContext : INotifyPropertyChanged
+public class MainWindowViewModel : INotifyPropertyChanged
 {
     private List<DicomTagVM> dicomTags = [];
 
