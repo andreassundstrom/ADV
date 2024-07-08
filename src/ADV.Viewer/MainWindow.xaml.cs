@@ -171,6 +171,7 @@ public partial class MainWindow : Window
     private void Dicom_AddTag_Click(object sender, RoutedEventArgs e)
     {
         AddTagWindow addTagWindow = new AddTagWindow();
+        addTagWindow.Owner = Application.Current.MainWindow;
         bool? result = addTagWindow.ShowDialog();
         if (result == true)
         {
