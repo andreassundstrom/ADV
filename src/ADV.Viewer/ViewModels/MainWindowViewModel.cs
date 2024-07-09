@@ -6,14 +6,14 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using ADV.Viewer.Models;
 
-namespace ADV.Viewer;
+namespace ADV.Viewer.ViewModels;
 
 /// <summary>
 /// Main windows data context.
 /// </summary>
 public class MainWindowViewModel : INotifyPropertyChanged
 {
-    private List<DicomTagVM> dicomTags = [];
+    private List<AdvDicomTag> dicomTags = [];
 
     private string? fileName;
 
@@ -31,7 +31,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     /// <summary>
     /// Gets or sets tags for currently loaded DICOM file.
     /// </summary>
-    public List<DicomTagVM> DicomTags
+    public List<AdvDicomTag> DicomTags
     {
         get
         {

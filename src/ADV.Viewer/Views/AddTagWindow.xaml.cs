@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Windows;
+using ADV.Viewer.ViewModels;
 
 namespace ADV.Viewer
 {

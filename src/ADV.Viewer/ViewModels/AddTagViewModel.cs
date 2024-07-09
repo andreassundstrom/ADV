@@ -1,9 +1,13 @@
-﻿using System.Collections;
+﻿// <copyright file="AddTagViewModel.cs" company="Andreas Sundström">
+// Copyright (c) Andreas Sundström. All rights reserved.
+// </copyright>
+
+using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 
-namespace ADV.Viewer
+namespace ADV.Viewer.ViewModels
 {
     /// <summary>
     /// The datacontext for the AddTagWindow.

@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using ADV.Viewer.Models;
+using ADV.Viewer.ViewModels;
 using FellowOakDicom;
 using FellowOakDicom.Imaging;
 using FellowOakDicom.Imaging.Codec;
@@ -134,12 +135,12 @@ public partial class MainWindow : Window
 
     private void SetDicomTags(DicomDataset dataset)
     {
-        List<DicomTagVM> tags = [];
+        List<AdvDicomTag> tags = [];
         int i = 0;
         foreach (DicomItem? tag in dataset)
         {
             bool value = dataset.TryGetString(tag.Tag, out string stringValue);
-            tags.Add(new DicomTagVM(i, tag.ToString(), value ? stringValue : "# No string representation"));
+            tags.Add(new AdvDicomTag(i, tag.ToString(), value ? stringValue : "# No string representation"));
             i++;
         }
 
@@ -192,8 +193,8 @@ public partial class MainWindow : Window
             DicomTag tag = new DicomTag(groupShort, elementShort);
 
             // Create new by value
-            List<DicomTagVM> newTagList = new List<DicomTagVM>(MainWindowDataContext.DicomTags);
-            newTagList.Add(new DicomTagVM(MainWindowDataContext.DicomTags.Count, tag.ToString(), valueString));
+            List<AdvDicomTag> newTagList = new List<AdvDicomTag>(MainWindowDataContext.DicomTags);
+            newTagList.Add(new AdvDicomTag(MainWindowDataContext.DicomTags.Count, tag.ToString(), valueString));
             MainWindowDataContext.DicomTags = newTagList;
         }
     }
