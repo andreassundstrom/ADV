@@ -4,6 +4,7 @@
 
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using ADV.Viewer.Models;
 
 namespace ADV.Viewer.ViewModels;
@@ -24,9 +25,19 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private int maxFrames;
 
     /// <summary>
-    /// Notify re-rendering on property change.
+    /// Notify on property changes.
     /// </summary>
     public event PropertyChangedEventHandler? PropertyChanged;
+
+    /// <summary>
+    /// Gets or sets command for when menu option file open file is selected.
+    /// </summary>
+    public required ICommand FileOpenFileCommand { get; set; }
+
+    /// <summary>
+    /// Gets or sets command for when menu option file open folder is selected.
+    /// </summary>
+    public required ICommand FileOpenFolderCommand { get; set; }
 
     /// <summary>
     /// Gets or sets tags for currently loaded DICOM file.

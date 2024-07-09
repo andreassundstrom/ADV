@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using ADV.Viewer.Commands;
 using ADV.Viewer.Models;
 using ADV.Viewer.ViewModels;
 using FellowOakDicom;
@@ -40,11 +41,19 @@ public partial class MainWindow : Window
             .Build();
 
         InitializeComponent();
-        MainWindowDataContext = new MainWindowViewModel();
+
+        MainWindowDataContext = new MainWindowViewModel()
+        {
+            FileOpenFileCommand = new RelayCommand(FileOpenFileCommand, FileOpenFileCanExecute),
+            FileOpenFolderCommand = new RelayCommand(FileOpenFolderCommand, FileOpenFolderCanExecute),
+        };
+
         DataContext = MainWindowDataContext;
+
         playTime = new DispatcherTimer();
         playTime.Tick += Timer_Tick;
         playTime.Interval = new TimeSpan(0, 0, 0, 0, 100);
+
     }
 
     /// <summary>
@@ -57,7 +66,7 @@ public partial class MainWindow : Window
         SlideToNextFrame();
     }
 
-    private void File_Open_Click(object sender, RoutedEventArgs e)
+    private void FileOpenFileCommand(object? args)
     {
         FileDialog fileDialog = new OpenFileDialog();
 
@@ -70,6 +79,21 @@ public partial class MainWindow : Window
             MainWindowDataContext.FileName = fileDialog.FileName;
             ReadDicom(fileDialog.FileName);
         }
+    }
+
+    private bool FileOpenFileCanExecute(object? args)
+    {
+        return true;
+    }
+
+    private void FileOpenFolderCommand(object? args)
+    {
+        return;
+    }
+
+    private bool FileOpenFolderCanExecute(object? args)
+    {
+        return false;
     }
 
     private void ReadDicom(string file)

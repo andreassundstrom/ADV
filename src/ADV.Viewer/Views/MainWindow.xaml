@@ -16,8 +16,8 @@
         <Menu Grid.Row="0" DockPanel.Dock="Top">
             <MenuItem Header="_File">
                 <MenuItem Header="_Open">
-                    <MenuItem Header="File" Name="File_Open" Click="File_Open_Click" />
-                    <MenuItem Header="Folder" Name="File_OpenFolder" />
+                    <MenuItem Header="File" Name="File_Open" Command="{Binding FileOpenFileCommand}" />
+                    <MenuItem Header="Folder" Command="{Binding FileOpenFolderCommand}" Name="File_OpenFolder" />
                 </MenuItem>
                 <Separator/>
                 <MenuItem Header="Exit" Name="File_Close" Click="File_Close_Click" />
